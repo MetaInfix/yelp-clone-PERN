@@ -11,11 +11,9 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send("Hello World!");
-})
-
-app.get("/api/v1/restaurants", (async (req, res, next) => {
+app
+  .route("/api/v1/restaurants")
+  .get(async (req, res, next) => {
     try {
       // const results = await db.query("SELECT * FROM restaurants");
       const results = await db.query(
@@ -27,11 +25,10 @@ app.get("/api/v1/restaurants", (async (req, res, next) => {
         data: results.rows,
       });
     } catch (error) {
-      res.send(error);
       console.log(error);
     }
-  }))
-  app.post("/api/v1/restaurants", async (req, res, next) => {
+  })
+  .post(async (req, res, next) => {
     const { name, location, price_range } = req.body;
     try {
       const results = await db.query(
